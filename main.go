@@ -25,11 +25,10 @@ func suspend(w http.ResponseWriter, r *http.Request) {
 
 func init() {
 	sigs := make(chan os.Signal, 1)
-	signal.Notify(sigs, syscall.SIGINT, syscall.SIGTERM)
+	signal.Notify(sigs, syscall.SIGHUP)
 	go func() {
-		for {
-			<-sigs
-		}
+		<- sigs
+		os.Exit(0)
 	}()
 }
 func main() {
